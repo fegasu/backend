@@ -1,0 +1,3 @@
+Options +FollowSymLinks -Multiviews
+RewriteEngine on
+RewriteRule ^([^/]+)/([^/]+)/([^/]+) lanza.php?peticion=$1&cuenta=$2&parte=$3 [L,QSA]
