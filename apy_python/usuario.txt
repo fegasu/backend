@@ -1,0 +1,17 @@
+CREATE TABLE `USUARIO` (
+	`idUsuario`	INTEGER PRIMARY KEY AUTOINCREMENT,
+	`login`	varchar ( 30 ) UNIQUE,
+	`nombre`	TEXT,
+	`apellido`	TEXT,
+	`email`	TEXT
+);
+
+
+CREATE TABLE `USUARIO` (
+	`idUsuario`	SERIAL PRIMARY KEY,
+	`login`	varchar ( 30 ) UNIQUE,
+	`nombre`	varchar ( 30 ),
+	`apellido`	varchar ( 30 ),
+	`email`	TEXT
+);
+
