@@ -5,6 +5,7 @@ var $Rs;
 var $u;
 public $numcols;
 
+
  function __construct($Bd="SALUD.db"){
  try {
     $this->Cnx= new PDO('sqlite:'.$Bd);
