@@ -48,7 +48,7 @@ def  EjecutarQuery(bd,sql):
 
 def  Ejecutar(bd,sql):
     global tipo
-    cnx1=Conexion(tipo)
+    cnx1=Conexion()
     cursor1=cnx1.cursor()
     cursor1.execute(sql)
     cnx1.commit()
