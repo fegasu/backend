@@ -1,4 +1,4 @@
-
+-- ******** CREACION DE LA TABLA USUARIO EN LOS DIFERENTES SISTEMAS DE BASESDE DATOS **********
 
 -- mysql
 CREATE TABLE `USUARIO` (
@@ -20,11 +20,11 @@ CREATE TABLE `USUARIO` (
 
 
 -- postgres
-CREATE TABLE `USUARIO` (
-	`idUsuario`	SERIAL PRIMARY KEY,
-	`login`	varchar ( 30 ) UNIQUE,
-	`nombre`	varchar ( 30 ),
-	`apellido`	varchar ( 30 ),
-	`email`	TEXT
+CREATE TABLE USUARIO (
+	idUsuario	SERIAL PRIMARY KEY,
+	login	varchar ( 30 ) UNIQUE,
+	nombre	varchar ( 30 ),
+	apellido	varchar ( 30 ),
+	email	TEXT
 );
 
