@@ -1,4 +1,4 @@
-python -m pip install mysql-connector-python
+
 
 -- mysql
 CREATE TABLE `USUARIO` (
