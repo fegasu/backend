@@ -1,3 +1,5 @@
+python -m pip install mysql-connector-python
+
 -- mysql
 CREATE TABLE `USUARIO` (
 	`idUsuario`	INTEGER PRIMARY KEY AUTO_INCREMENT,
