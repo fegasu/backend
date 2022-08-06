@@ -1,1 +1,0 @@
-start chrome https://dbdesigner-4.en.lo4d.com/download
