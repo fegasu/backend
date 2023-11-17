@@ -1,54 +1,71 @@
-from flask import Flask,render_template,request
-import sqlite3
+from flask import Flask,jsonify,request
 import json
+import mysql.connector
+import pandas as pd
+
+conn=mysql.connector.connect(
+    host="localhost",
+    user="root",
+    passwd="",
+    database="APIDB",
+    port=3306
+)
+cursor=conn.cursor()
 
 app=Flask(__name__)
-app.run(debug=True)
-@app.route("/")
-def xx():
-	return "<p>Mi primera ruta del dia de hoy</p>"
+#app.run(debug=True)
+@app.route("/",methods=['GET'])
+def index():
+	return jsonify({"mensaje":"Mi primera API"})
+
+@app.route("/usua",methods=['GET'])
+def get_usuarios():
+	sql="select * from usuario order by 1"
+	listar=EjecutarQuery(sql)
+	return listar
 
 @app.route("/usua/s/<id>",methods=['GET'])
-def usuario(id=0):
-	if id=="0":
-		sql="select * from persona order by 1"
-	else:
-		sql="select * from persona where idPersona="+str(id)+" order by 1"
-	listar=EjecutarQuery("SALUD.db",sql)
+def get_usuarios1(id):
+	sql="select * from usuario where idusuario="+str(id)+" order by 1"
+	listar=EjecutarQuery(sql)
 	return listar
 
 @app.route("/usua/i",methods=['POST'])
-def iusuario():
-	json=request.get_json(force=True)
-	sql="insert into persona(idpersona,tipoidentificacion,nombre,apellido) values("+str(json["idpersona"])+","+str(json["tipoidentificacion"])+",'"+json["nombre"]+"','"+json["apellido"]+"')"
-	
-	print(sql)
-	Ejecutar("SALUD.db",sql)
-	return sql
+def post_iusuario():
+    json=request.get_json(force=True)
+    sql="insert into usuario(login,nombre,apellido,email) values(%s,%s,%s,%s)"
+    sqlv=(json["login"],json["nombre"],json["apellido"],json["email"])
+    cursor.execute(sql,sqlv)
+    conn.commit()
+    return "200"
+
+@app.route("/usua/d/<id>",methods=['DELETE'])
+def post_dusuario(id):
+    sql="delete from usuario where idusuario="+str(id)
+    cursor.execute(sql)
+    conn.commit()
+    return "200"
 
 @app.route("/usua/u/<id>",methods=['PUT'])
-def ausuario(id):
-	json=request.get_json(force=True)
-	sql="update persona set idpersona="+str(json["idpersona"])+",tipoidentificacion="+str(json["tipoidentificacion"])+",nombre='"+json["nombre"]+"',apellido='"+json["apellido"]+"' where idpersona="+str(id)
-	Ejecutar("SALUD.db",sql)
-	return sql
-@app.route("/usua/d/<id>",methods=['DELETE'])
-def dusuario(id):
-	sql="delete from  persona where idpersona="+str(id)
-	Ejecutar("SALUD.db",sql)
-	return sql
+def post_ausuario(id):
+    json=request.get_json(force=True)
+    sql="update usuario set login=%s,nombre=%s,apellido=%s,email=%s where idusuario="+str(id)
+    sqlv=(json["login"],json["nombre"],json["apellido"],json["email"])
+    cursor.execute(sql,sqlv)
+    conn.commit()
+    return "200"
 
-def EjecutarQuery(bd,sql):
-	cnx1=sqlite3.connect(bd)
-	cursor=cnx1.cursor()
-	cursor.execute(sql)
-	row=cursor.fetchall()
-	return json.dumps(row)
 
-def Ejecutar(bd,sql):
-	cnx1=sqlite3.connect(bd)
-	cursor=cnx1.cursor()
-	cursor.execute(sql)
-	cnx1.commit()
-	cnx1.close()
-	return json.dumps("200")
+def EjecutarQuery(sql):
+    cursor.execute(sql)
+    row=cursor.fetchall()
+    return json.dumps(row)
+
+def Ejecutar(sql):
+    cursor.execute(sql)
+    conn.commit()
+    
+    return json.dumps("200")
+
+if __name__ =="__main__":
+    app.run(debug=True)
